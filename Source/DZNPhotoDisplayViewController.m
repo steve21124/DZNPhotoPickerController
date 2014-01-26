@@ -499,7 +499,12 @@ static NSString *kTagCellID = @"kTagCellID";
     else {
         
         [self showActivityIndicators:YES];
-
+    [DZNPhotoEditViewController didFinishPickingOriginalImage:nil editedImage:nil cropRect:CGRectZero
+                                                     cropMode:DZNPhotoEditViewControllerCropModeNone
+                                                 referenceURL:description.fullURL
+                                                   authorName:description.authorName
+                                                   sourceName:description.sourceName];        
+/*
         [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:description.fullURL
                                                               options:SDWebImageCacheMemoryOnly|SDWebImageRetryFailed
                                                              progress:NULL
@@ -518,6 +523,7 @@ static NSString *kTagCellID = @"kTagCellID";
                                                  
                                                  [self showActivityIndicators:NO];
                                              }];
+                                             */
     }
     
     [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
