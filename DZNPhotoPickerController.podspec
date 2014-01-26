@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.author       = { "Ignacio Romero Z." => "iromero@dzen.cl" }
   s.platform     = :ios, '7.0'
   s.ios.deployment_target = '7.0'
-  s.source       = { :git => "https://github.com/steve21124/UIPhotoPickerController.git" }
+  s.source       = { :git => "https://github.com/steve21124/DZNPhotoPickerController.git" }
   s.source_files  = 'Classes', 'Source/**/*.{h,m}'
   s.ios.framework = 'MobileCoreServices'
   s.dependency 'AFNetworking', '~> 1.3.3'
