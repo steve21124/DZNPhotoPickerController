@@ -480,7 +480,8 @@ DZNPhotoAspect photoAspectFromSize(CGSize aspectRatio)
                                                          cropMode:self.cropMode
                                                      referenceURL:_photoDescription.fullURL
                                                        authorName:_photoDescription.authorName
-                                                       sourceName:_photoDescription.sourceName];
+                                                       sourceName:_photoDescription.sourceName
+                                                       sourceDict:nil];
     }
 }
 
@@ -501,6 +502,7 @@ DZNPhotoAspect photoAspectFromSize(CGSize aspectRatio)
                          referenceURL:(NSURL *)referenceURL
                            authorName:(NSString *)authorName
                            sourceName:(NSString *)sourceName
+                           sourceDict:(DZNPhotoDescription *)sourceDict
 {
     NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                      [NSValue valueWithCGRect:cropRect],UIImagePickerControllerCropRect,
@@ -513,7 +515,31 @@ DZNPhotoAspect photoAspectFromSize(CGSize aspectRatio)
     if (authorName != nil) [userInfo setObject:authorName forKey:DZNPhotoPickerControllerAuthorCredits];
     if (sourceName != nil) [userInfo setObject:sourceName forKey:DZNPhotoPickerControllerSourceName];
     if (cropMode != DZNPhotoEditViewControllerCropModeNone) [userInfo setObject:[NSNumber numberWithInteger:cropMode] forKey:DZNPhotoPickerControllerCropMode];
-    
+    if (sourceDict != nil) {
+
+        if (sourceDict.remoteID != nil) [userInfo setObject:sourceDict.remoteID forKey:@"remoteID"];
+        if (sourceDict.title != nil) [userInfo setObject:sourceDict.title forKey:@"title"];        
+        if (sourceDict.sourceName != nil) [userInfo setObject:sourceDict.sourceName forKey:@"sourceName"];
+        if (sourceDict.fullURL != nil) [userInfo setObject:sourceDict.fullURL forKey:@"fullURL"];
+        if (sourceDict.thumbURL != nil) [userInfo setObject:sourceDict.thumbURL forKey:@"thumbURL"];
+        if (sourceDict.authorName != nil) [userInfo setObject:sourceDict.authorName forKey:@"authorName"];
+        if (sourceDict.authorUsername != nil) [userInfo setObject:sourceDict.authorName forKey:@"authorUsername"];
+        if (sourceDict.authorURL != nil) [userInfo setObject:sourceDict.authorName forKey:@"authorURL"];
+        if (sourceDict.authorURLPic != nil) [userInfo setObject:sourceDict.authorName forKey:@"authorURLPic"];
+        if (sourceDict.category != nil) [userInfo setObject:sourceDict.category forKey:@"category"];
+        if (sourceDict.createdAt != nil) [userInfo setObject:sourceDict.createdAt forKey:@"createdAt"];
+        if (sourceDict.description != nil) [userInfo setObject:sourceDict.description forKey:@"description"];
+        if (sourceDict.favoriteCount != nil) [userInfo setObject:sourceDict.favoriteCount forKey:@"favoriteCount"];
+        if (sourceDict.imageHeight != nil) [userInfo setObject:sourceDict.imageHeight forKey:@"imageHeight"];
+        if (sourceDict.imageWidth != nil) [userInfo setObject:sourceDict.imageWidth forKey:@"imageWidth"];
+        if (sourceDict.nsfw != nil) [userInfo setObject:sourceDict.nsfw forKey:@"nsfw"];
+        if (sourceDict.privacy != nil) [userInfo setObject:sourceDict.privacy forKey:@"privacy"];
+        if (sourceDict.rating != nil) [userInfo setObject:sourceDict.rating forKey:@"rating"];
+        if (sourceDict.commentCount != nil) [userInfo setObject:sourceDict.commentCount forKey:@"commentCount"];
+        if (sourceDict.viewCount != nil) [userInfo setObject:sourceDict.viewCount forKey:@"viewCount"];
+        if (sourceDict.voteCount != nil) [userInfo setObject:sourceDict.voteCount forKey:@"voteCount"];
+        
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:kDZNPhotoPickerDidFinishPickingNotification object:nil userInfo:userInfo];
 }
 

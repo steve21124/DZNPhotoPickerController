@@ -165,10 +165,10 @@ NSString *NSStringFromServiceType(DZNPhotoPickerControllerService service)
     DZNPhotoDisplayViewController *photoDisplayController = [[DZNPhotoDisplayViewController alloc] init];
     photoDisplayController.searchTerm = _initialSearchTerm;
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+   // if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPicker:)];
         [photoDisplayController.navigationItem setRightBarButtonItem:cancel];
-    }
+   // }
     
     [self setViewControllers:@[photoDisplayController]];
 }

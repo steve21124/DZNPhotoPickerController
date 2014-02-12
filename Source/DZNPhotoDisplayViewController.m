@@ -214,10 +214,10 @@ static NSString *kTagCellID = @"kTagCellID";
 {
     CGFloat topBarsHeight = 0;
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+   // if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         CGFloat statusHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
         topBarsHeight += statusHeight;
-    }
+    //}
     
     CGFloat navigationHeight = self.navigationController.navigationBar.frame.size.height;
     topBarsHeight += navigationHeight;
@@ -244,13 +244,15 @@ static NSString *kTagCellID = @"kTagCellID";
 {
     BOOL shouldShift = _searchBar.showsScopeBar;
     
-    CGFloat statusHeight = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) ? [UIApplication sharedApplication].statusBarFrame.size.height : 0.0;
+    //CGFloat statusHeight = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) ? [UIApplication sharedApplication].statusBarFrame.size.height : 0.0;
+    CGFloat statusHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
     
     CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, kMinimumBarHeight);
     frame.size.height = shouldShift ? kMinimumBarHeight*2 : kMinimumBarHeight;
     frame.origin.y = shouldShift ? statusHeight : 0.0;
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && !shouldShift) {
+    //if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && !shouldShift) {
+    if (!shouldShift) {
         frame.origin.y += statusHeight+kMinimumBarHeight;
     }
     
@@ -373,12 +375,43 @@ static NSString *kTagCellID = @"kTagCellID";
     
     if ((_selectedService & DZNPhotoPickerControllerService500px) > 0) {
         for (NSDictionary *object in reponse) {
-
-            DZNPhotoDescription *description = [DZNPhotoDescription photoDescriptionWithTitle:[object valueForKey:@"username"]
+/*
+            @property (nonatomic, copy) NSString *category;
+            @property (nonatomic, copy) NSDate *createdAt;
+            @property (nonatomic, copy) NSString *description;
+            @property (nonatomic, copy) NSNumber *favoriteCount;
+            @property (nonatomic, copy) NSNumber *imageHeight;
+            @property (nonatomic, copy) NSNumber *imageWidth;
+            @property (nonatomic, copy) NSString *nsfw;
+            @property (nonatomic, copy) NSString *privacy;
+            @property (nonatomic, copy) NSString *rating;
+            @property (nonatomic, copy) NSNumber *commentCount;
+            @property (nonatomic, copy) NSNumber *viewCount;
+            @property (nonatomic, copy) NSNumber *voteCount;
+            */
+            
+            DZNPhotoDescription *description = [DZNPhotoDescription photoDescriptionWithTitle:[object valueForKey:@"id"]
+                                            title:[object valueForKey:@"name"]
                                              authorName:[NSString stringWithFormat:@"%@ %@",[object valueForKeyPath:@"user.firstname"],[object valueForKeyPath:@"user.lastname"]]
+                                                authorUsername:[object valueForKeyPath:@"user.username"]
+                                                authorURL:@""
+                                                authorURLPic:[object valueForKeyPath:@"user.userpic_url"]
                                                thumbURL:[NSURL URLWithString:[[[object valueForKey:@"images"] objectAtIndex:0] valueForKey:@"url"]]
                                                 fullURL:[NSURL URLWithString:[[[object valueForKey:@"images"] objectAtIndex:1] valueForKey:@"url"]]
-                                             sourceName:[self selectedServiceName]];
+                                             sourceName:[self selectedServiceName]
+                                                category:[object valueForKey:@"category"]
+                                                createdAt:[object valueForKey:@"created_at"]
+                                                description:[object valueForKey:@"description"]
+                                                favoriteCount:[object valueForKey:@"favorites_count"]
+                                                imageHeight:[object valueForKey:@"height"]
+                                                imageWidth:[object valueForKey:@"width"]
+                                                nsfw:[object valueForKey:@"nsfw"]
+                                                privacy:[object valueForKey:@"privacy"]
+                                                rating:[object valueForKey:@"rating"]
+                                                commentCount:[object valueForKey:@"comments_count"]
+                                                viewCount:[object valueForKey:@"times_viewed"]
+                                                voteCount:[object valueForKey:@"votes_count"]
+                                                ];
             
             [result addObject:description];
         }
@@ -386,11 +419,28 @@ static NSString *kTagCellID = @"kTagCellID";
     else if ((_selectedService & DZNPhotoPickerControllerServiceFlickr) > 0) {
         for (NSDictionary *object in reponse) {
             
-            DZNPhotoDescription *description = [DZNPhotoDescription photoDescriptionWithTitle:[object valueForKey:@"title"]
+            DZNPhotoDescription *description = [DZNPhotoDescription photoDescriptionWithTitle:[object valueForKey:@"id"]
+                                            title:[object valueForKey:@"title"]
                                              authorName:[object valueForKey:@"owner"]
+                                               authorUsername:@""
+                                                    authorURL:@""
+                                                 authorURLPic:@""
                                                thumbURL:[[FlickrKit sharedFlickrKit] photoURLForSize:FKPhotoSizeLargeSquare150 fromPhotoDictionary:object]
                                                 fullURL:[[FlickrKit sharedFlickrKit] photoURLForSize:FKPhotoSizeLarge1024 fromPhotoDictionary:object]
-                                             sourceName:[self selectedServiceName]];
+                                             sourceName:[self selectedServiceName]
+                                                 category:[object valueForKey:@"category"]
+                                                createdAt:[object valueForKey:@"created_at"]
+                                              description:[object valueForKey:@"description"]
+                                            favoriteCount:[object valueForKey:@"favorites_count"]
+                                              imageHeight:[object valueForKey:@"height"]
+                                               imageWidth:[object valueForKey:@"width"]
+                                                     nsfw:[object valueForKey:@"nsfw"]
+                                                  privacy:[object valueForKey:@"privacy"]
+                                                   rating:[object valueForKey:@"rating"]
+                                             commentCount:[object valueForKey:@"comments_count"]
+                                                viewCount:[object valueForKey:@"times_viewed"]
+                                                voteCount:[object valueForKey:@"votes_count"]
+                                                ];
             
             [result addObject:description];
         }
@@ -494,8 +544,8 @@ static NSString *kTagCellID = @"kTagCellID";
                                                      cropMode:DZNPhotoEditViewControllerCropModeNone
                                                  referenceURL:description.fullURL
                                                    authorName:description.authorName
-                                                   sourceName:description.sourceName];  
-                                                   
+                                                   sourceName:description.sourceName
+                                                   sourceDict:description];
     /*
     if (self.navigationController.allowsEditing) {
         
@@ -505,7 +555,7 @@ static NSString *kTagCellID = @"kTagCellID";
     else {
         
         [self showActivityIndicators:YES];
-      
+       
 
         [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:description.fullURL
                                                               options:SDWebImageCacheMemoryOnly|SDWebImageRetryFailed
@@ -525,12 +575,12 @@ static NSString *kTagCellID = @"kTagCellID";
                                                  
                                                  [self showActivityIndicators:NO];
                                              }];
-                                             
+ 
     }
     
     [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    
-    */
+ 
+ */
 }
 
 /*
@@ -928,6 +978,7 @@ static NSString *kTagCellID = @"kTagCellID";
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
+    NSLog(@"DZNPHotoDisplayViewCOntroller search bar cancelled");
     
 }
 

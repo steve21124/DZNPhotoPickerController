@@ -63,6 +63,7 @@ typedef NS_ENUM(NSInteger, DZNPhotoEditViewControllerCropMode) {
                              cropMode:(DZNPhotoEditViewControllerCropMode)cropMode
                          referenceURL:(NSURL *)referenceURL
                            authorName:(NSString *)authorName
-                           sourceName:(NSString *)sourceName;
+                           sourceName:(NSString *)sourceName
+                           sourceDict:(DZNPhotoDescription *)sourceDict;
 
 @end
