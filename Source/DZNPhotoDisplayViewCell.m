@@ -48,9 +48,21 @@
 - (void)setSelected:(BOOL)selected
 {
     if (_imageView.image) {
+
+        //TODO:DONE --SR Steve add border to selected image
+        CALayer *borderLayer = [CALayer layer];
+        CGRect borderFrame = CGRectMake(0, 0, (_imageView.frame.size.width), (_imageView.frame.size.height));
+        [borderLayer setBackgroundColor:[[UIColor clearColor] CGColor]];
+        [borderLayer setFrame:borderFrame];
+        [borderLayer setCornerRadius:3];
+        [borderLayer setBorderWidth:5];
+        [borderLayer setBorderColor:[[UIColor blueColor] CGColor]];
+        [_imageView.layer addSublayer:borderLayer];
+				
         [super setSelected:selected];
     }
 }
+
 
 - (void)setHighlighted:(BOOL)highlighted
 {
